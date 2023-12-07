@@ -2,7 +2,7 @@ SHELL:=bash
 
 REGISTRY:=ghcr.io/yevhenkuznetsov
 BASE_IMAGE_NAME:=${REGISTRY}/base
-BASE_IMAGE_VERSION:=$(shell cat base/version)
+BASE_IMAGE_VERSION:=$(shell cat base/version.in)
 QT_IMAGE_NAME:=${REGISTRY}/qt
 QT_IMAGE_VERSION:=$(shell cat qt/version.in)
 

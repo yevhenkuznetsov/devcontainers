@@ -74,7 +74,7 @@ RUN ../qt6/configure && \
 FROM alpine:latest AS volume
 
 ARG QT_VERSION
-COPY --from=build /usr/local/Qt-$QT_VERSION /usr/local/Qt-$QT_VERSION
+COPY --from=build /usr/local/Qt-$QT_VERSION /opt/Qt-$QT_VERSION
 COPY qt/env.sh /env/qt.env
-RUN sed -i "s:%QT_PATH%:/usr/local/Qt-$QT_VERSION:g" /env/qt.env
-RUN sed -i "s:%QT_BIN_PATH%:/usr/local/Qt-$QT_VERSION/bin:g" /env/qt.env
+RUN sed -i "s:%QT_PATH%:/opt/Qt-$QT_VERSION:g" /env/qt.env
+RUN sed -i "s:%QT_BIN_PATH%:/opt/Qt-$QT_VERSION/bin:g" /env/qt.env
