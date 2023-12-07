@@ -1,10 +1,10 @@
-FROM ubuntu:jammy
+ARG QT_VERSION=6.6.1
+
+FROM ubuntu:jammy AS build
+ARG QT_VERSION
 
 LABEL org.opencontainers.image.source=https://github.com/yevhenkuznetsov/devcontainers
-LABEL org.opencontainers.image.description="Base container for the all derived devcontainers"
-
-ARG USERNAME=vscode
-RUN useradd -s /bin/bash -m $USERNAME
+LABEL org.opencontainers.image.description="Qt 6.6.1 container volume for projects with VS code devcontainers"
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV TZ=Etc/UTC
@@ -12,8 +12,8 @@ ENV TZ=Etc/UTC
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
     tzdata locales ca-certificates \
-    clang gdb cmake ninja-build python3 python3-pip \
-    git ssh bash-completion gnupg2 \
+    clang nodejs perl cmake ninja-build git && \
+    apt-get install --no-install-recommends -y \
     mesa-common-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
@@ -56,13 +56,25 @@ RUN apt-get update && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
 
-RUN pip install cmake_format clang-format
-
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 
-COPY base/.clang-format /
-COPY base/.cmake-format.json /
+WORKDIR /tmp
+RUN git clone git://code.qt.io/qt/qt5.git qt6 && \
+    cd qt6 && git checkout v$QT_VERSION && \
+    perl init-repository
 
-USER $USERNAME
+WORKDIR /tmp/qt6-build
+RUN ../qt6/configure && \
+    cmake --build . && \
+    cmake --install . && \
+    cd / && rm -rf /tmp/qt6*
+
+FROM alpine:latest AS volume
+
+ARG QT_VERSION
+COPY --from=build /usr/local/Qt-$QT_VERSION /usr/local/Qt-$QT_VERSION
+COPY qt/env.sh /env/qt.env
+RUN sed -i "s:%QT_PATH%:/usr/local/Qt-$QT_VERSION:g" /env/qt.env
+RUN sed -i "s:%QT_BIN_PATH%:/usr/local/Qt-$QT_VERSION/bin:g" /env/qt.env
