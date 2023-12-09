@@ -2,6 +2,7 @@ FROM ubuntu:jammy
 
 LABEL org.opencontainers.image.source=https://github.com/yevhenkuznetsov/devcontainers
 LABEL org.opencontainers.image.description="Base container for the all derived devcontainers"
+LABEL org.opencontainers.image.licenses="tbd"
 
 ARG USERNAME=vscode
 RUN useradd -s /bin/bash -m $USERNAME

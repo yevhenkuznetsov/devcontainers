@@ -5,6 +5,7 @@ ARG QT_VERSION
 
 LABEL org.opencontainers.image.source=https://github.com/yevhenkuznetsov/devcontainers
 LABEL org.opencontainers.image.description="Qt 6.6.1 container volume for projects with VS code devcontainers"
+LABEL org.opencontainers.image.licenses="tbd."
 
 ARG DEBIAN_FRONTEND="noninteractive"
 ENV TZ=Etc/UTC
@@ -12,8 +13,8 @@ ENV TZ=Etc/UTC
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
     tzdata locales ca-certificates \
-    clang nodejs perl cmake ninja-build git && \
-    apt-get install --no-install-recommends -y \
+    clang gdb nodejs perl cmake ninja-build python3 python3-pip \
+    git ssh bash-completion gnupg2 \
     mesa-common-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
@@ -71,7 +72,7 @@ RUN ../qt6/configure && \
     cmake --install . && \
     cd / && rm -rf /tmp/qt6*
 
-FROM alpine:latest AS volume
+FROM alpine:latest
 
 ARG QT_VERSION
 COPY --from=build /usr/local/Qt-$QT_VERSION /opt/Qt-$QT_VERSION
