@@ -67,10 +67,6 @@ COPY base/.clang-format /
 COPY base/.cmake-format.json /
 
 RUN echo "\n\n# Configure environment variables for all attached volumes\n \
-    for f in \"/env/*.env\"; do\n \
-    \tif [ -f \$f ]; then\n \
-    \t\tsource \$f\n \
-    \tfi\n \
-    done\n" > /etc/profile
+    for f in /opt/*.env; do if [ -f \$f ]; then source \$f; fi done\n" > /etc/profile
 
 USER $USERNAME
