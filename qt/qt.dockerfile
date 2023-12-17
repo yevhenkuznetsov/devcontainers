@@ -13,8 +13,8 @@ ENV TZ=Etc/UTC
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
     tzdata locales ca-certificates \
-    clang gdb nodejs perl cmake ninja-build python3 python3-pip \
-    git ssh bash-completion gnupg2 \
+    clang nodejs perl cmake ninja-build \
+    git \
     mesa-common-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
@@ -62,9 +62,8 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 
 WORKDIR /tmp
-RUN git clone git://code.qt.io/qt/qt5.git qt6 && \
-    cd qt6 && git checkout v$QT_VERSION && \
-    perl init-repository
+RUN git clone --depth 1 --branch v$QT_VERSION git://code.qt.io/qt/qt5.git qt6
+RUN cd qt6 && perl init-repository
 
 WORKDIR /tmp/qt6-build
 RUN ../qt6/configure && \
@@ -75,7 +74,7 @@ RUN ../qt6/configure && \
 FROM alpine:latest
 
 ARG QT_VERSION
-COPY --from=build /usr/local/Qt-$QT_VERSION /opt/Qt-$QT_VERSION
-COPY qt/env.sh /env/qt.env
-RUN sed -i "s:%QT_PATH%:/opt/Qt-$QT_VERSION:g" /env/qt.env
-RUN sed -i "s:%QT_BIN_PATH%:/opt/Qt-$QT_VERSION/bin:g" /env/qt.env
+COPY --from=build /usr/local/Qt-$QT_VERSION /qt-volume/opt/qt
+COPY qt/env.sh /qt-volume/opt/qt.env
+RUN sed -i "s:%QT_PATH%:/opt/qt:g" /qt-volume/opt/qt.env
+RUN sed -i "s:%QT_BIN_PATH%:/opt/qt/bin:g" /qt-volume/opt/qt.env
