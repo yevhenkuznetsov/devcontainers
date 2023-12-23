@@ -63,6 +63,9 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 
+COPY base/gtest.sh /tmp
+RUN /tmp/gtest.sh
+
 COPY base/.clang-format /
 COPY base/.cmake-format.json /
 
