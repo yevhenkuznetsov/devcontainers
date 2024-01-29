@@ -72,14 +72,14 @@ RUN apt-get update && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
 
-RUN pip install cmake_format clang-format mkdocs
+COPY base/gtest.sh /tmp
+RUN /tmp/gtest.sh
+
+RUN pip install cmake_format clang-format mkdocs mkdocs-material
 
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
-
-COPY base/gtest.sh /tmp
-RUN /tmp/gtest.sh
 
 COPY base/.clang-format /
 COPY base/.cmake-format.json /
