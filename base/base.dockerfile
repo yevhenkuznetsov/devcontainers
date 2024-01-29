@@ -25,6 +25,9 @@ RUN apt-get update && \
     libegl1 \
     libfontconfig1 \
     libxkbcommon* \
+    libxcursor-dev \
+    libxshmfence-dev \
+    libdbus-1-dev \
     libdbus-1-3 \
     libxcb*-dev \
     libxcb-cursor0 \
@@ -52,7 +55,19 @@ RUN apt-get update && \
     libxcb-xinerama0-dev \
     libxcb-xkb-dev \
     libxkbcommon-dev \
-    libxkbcommon-x11-dev && \
+    libxkbcommon-x11-dev \
+    libxkbfile-dev \
+    libxcomposite-dev \
+    libxcomposite1 \
+    libxrandr-dev \
+    libxrandr2 \
+    libxtst-dev \
+    libxtst6 \
+    libwayland-* \
+    libnvidia-egl-wayland-dev \
+    mesa-vulkan-drivers \
+    libvulkan1 \
+    libvulkan-dev && \
     rm -rf /var/lib/apt/lists/* && apt-get clean -y && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
