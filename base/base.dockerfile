@@ -75,7 +75,7 @@ RUN apt-get update && \
 COPY base/gtest.sh /tmp
 RUN /tmp/gtest.sh
 
-RUN pip install cmake_format clang-format mkdocs mkdocs-material
+RUN pip install cmake_format clang-format black mkdocs mkdocs-material
 
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
