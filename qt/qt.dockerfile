@@ -101,7 +101,7 @@ RUN cd / && rm -rf /tmp/qt6*
 FROM alpine:latest
 
 ARG QT_VERSION
-COPY --from=build /usr/local/Qt-$QT_VERSION /qt-volume/opt/qt
-COPY qt/env.sh /qt-volume/opt/qt.env
-RUN sed -i "s:%QT_PATH%:/opt/qt:g" /qt-volume/opt/qt.env
-RUN sed -i "s:%QT_BIN_PATH%:/opt/qt/bin:g" /qt-volume/opt/qt.env
+COPY --from=build /usr/local/Qt-$QT_VERSION /opt/qt
+COPY qt/env.sh /opt/qt.env
+RUN sed -i "s:%QT_PATH%:/opt/qt:g" /opt/qt.env
+RUN sed -i "s:%QT_BIN_PATH%:/opt/qt/bin:g" /opt/qt.env

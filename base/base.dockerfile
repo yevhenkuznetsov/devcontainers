@@ -87,4 +87,11 @@ COPY base/.cmake-format.json /
 RUN echo "\n\n# Configure environment variables for all attached volumes\n \
     for f in /opt/*.env; do if [ -f \$f ]; then source \$f; fi done\n" > /etc/profile
 
+RUN usermod -a -G video $USERNAME
+
+RUN apt update && apt install sudo
+RUN echo "ALL ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+RUN mkdir /code && chown ${USERNAME}:${USERNAME} /code
+
 USER $USERNAME
