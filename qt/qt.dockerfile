@@ -1,4 +1,4 @@
-ARG QT_VERSION=6.6.1
+ARG QT_VERSION=6.7.0
 
 FROM ubuntu:jammy AS build
 ARG QT_VERSION
