@@ -1,6 +1,6 @@
 ARG QT_VERSION=6.7.0
 
-FROM ubuntu:jammy AS build
+FROM ubuntu:focal AS build
 ARG QT_VERSION
 
 LABEL org.opencontainers.image.source=https://github.com/yevhenkuznetsov/devcontainers
@@ -13,11 +13,13 @@ ENV TZ=Etc/UTC
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
     tzdata locales ca-certificates \
-    clang perl cmake ninja-build python3 python3-pip \
+    gcc g++ perl ninja-build python3 python3-pip \
     git curl && \
     rm -rf /var/lib/apt/lists/* && apt-get clean -y && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
+
+RUN pip3 install cmake
 
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -38,7 +40,7 @@ RUN apt-get update && \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
     libclang-dev \
-    llvm-14-dev \
+    llvm-12-dev \
     libglib2.0-0 \
     libgl1 \
     libegl1 \
