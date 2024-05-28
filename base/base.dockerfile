@@ -67,7 +67,12 @@ RUN apt-get update && \
     libnvidia-egl-wayland-dev \
     mesa-vulkan-drivers \
     libvulkan1 \
-    libvulkan-dev && \
+    libvulkan-dev \
+    libpcre2-dev \
+    libnss3 \
+    libjpeg-turbo8 \
+    libwebp-dev \
+    libtiff-dev && \
     rm -rf /var/lib/apt/lists/* && apt-get clean -y && \
     sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     locale-gen
