@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM ubuntu:noble
 
 LABEL org.opencontainers.image.source=https://github.com/yevhenkuznetsov/devcontainers
 LABEL org.opencontainers.image.description="Base container for the all derived devcontainers"
@@ -14,12 +14,12 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y \
     tzdata locales ca-certificates \
     clang gdb cmake ninja-build python3 python3-pip \
-    git ssh bash-completion gnupg2 \
+    git ssh bash-completion gnupg2 curl sudo \
     mesa-common-dev \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
     libclang-dev \
-    llvm-14-dev \
+    llvm-18-dev \
     libglib2.0-0 \
     libgl1 \
     libegl1 \
@@ -75,7 +75,7 @@ RUN apt-get update && \
 COPY base/gtest.sh /tmp
 RUN /tmp/gtest.sh
 
-RUN pip install cmake_format clang-format black mkdocs mkdocs-material
+RUN pip install --break-system-packages cmake_format clang-format black mkdocs mkdocs-material
 
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -89,7 +89,6 @@ RUN echo "\n\n# Configure environment variables for all attached volumes\n \
 
 RUN usermod -a -G video $USERNAME
 
-RUN apt update && apt install sudo
 RUN echo "ALL ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 RUN mkdir /code && chown ${USERNAME}:${USERNAME} /code
