@@ -1,0 +1,12 @@
+{
+  "editor.formatOnSave": false,
+  "editor.insertSpaces": true,
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "[jsonc]": {
+    "editor.formatOnSave": true,
+  },
+  "[dockerfile]": {
+    "editor.formatOnSave": true,
+  }
+}
