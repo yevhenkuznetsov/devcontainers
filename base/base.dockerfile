@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM ubuntu:jammy
 
 LABEL org.opencontainers.image.source=https://github.com/yevhenkuznetsov/devcontainers
 LABEL org.opencontainers.image.description="Base container for the all derived devcontainers"
@@ -19,7 +19,7 @@ RUN apt-get update && \
     libgl1-mesa-dev \
     libglu1-mesa-dev \
     libclang-dev \
-    llvm-18-dev \
+    llvm-dev \
     libglib2.0-0 \
     libgl1 \
     libegl1 \
@@ -80,7 +80,7 @@ RUN apt-get update && \
 COPY base/gtest.sh /tmp
 RUN /tmp/gtest.sh
 
-RUN pip install --break-system-packages cmake_format clang-format black mkdocs mkdocs-material
+RUN pip install cmake_format clang-format black mkdocs mkdocs-material
 
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
