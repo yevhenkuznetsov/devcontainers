@@ -35,10 +35,11 @@ run-base:
 
 QT_IMAGE_NAME:=${REGISTRY}/qt
 QT_IMAGE_VERSION:=$(shell cat qt/version.in)
+QT_BUILD_JOBS?=4
 
 .PHONY: qt
 qt:
-	docker build . --tag ${QT_IMAGE_NAME} --file ${PWD}/qt/qt.dockerfile
+	docker build . --build-arg QT_BUILD_JOBS=${QT_BUILD_JOBS} --tag ${QT_IMAGE_NAME} --file ${PWD}/qt/qt.dockerfile
 	docker tag ${QT_IMAGE_NAME} ${QT_IMAGE_NAME}:${QT_IMAGE_VERSION}
 	docker tag ${QT_IMAGE_NAME}:${QT_IMAGE_VERSION} ${QT_IMAGE_NAME}:latest
 	docker tag ${QT_IMAGE_NAME} ${QT_IMAGE_NAME}:latest

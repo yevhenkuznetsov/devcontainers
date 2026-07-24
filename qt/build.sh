@@ -2,16 +2,12 @@
 
 set -euo pipefail
 
-webengine_gl_file="/tmp/qt6/qtwebengine/src/3rdparty/chromium/ui/gl/gl_context_glx.cc"
-if [ -f "$webengine_gl_file" ]; then
-  sed -i '18i #include "ui/gl/gl_surface.h"' "$webengine_gl_file"
-fi
-
-command="cmake --build . --parallel"
+build_jobs="${CMAKE_BUILD_PARALLEL_LEVEL:-4}"
+command=(cmake --build . --parallel "$build_jobs")
 max_attempts=3
 attempt_num=1
 
-until $command
+until "${command[@]}"
 do
   if [ $attempt_num -eq $max_attempts ]
   then
@@ -23,5 +19,3 @@ do
     sleep 1
   fi
 done
-
-cmake --install .
