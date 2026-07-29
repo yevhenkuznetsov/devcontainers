@@ -76,6 +76,8 @@ RUN ../qt6/configure -openssl -release -nomake examples -nomake tests \
     -DFEATURE_qtwebengine_build=ON
 COPY qt/build.sh /tmp/qt6-build
 RUN ./build.sh
+COPY qt/verify-webengine-codecs.sh /tmp/qt6-build
+RUN bash ./verify-webengine-codecs.sh
 RUN sudo cmake --install .
 RUN bash -lc 'set -euo pipefail; \
 required_modules="Concurrent Core Graphs Gui HttpServer LinguistTools Location Multimedia Network OpenGL Positioning Qml QmlIntegration Quick Quick3D QuickControls2 QuickVectorImage QuickWidgets Sensors SerialPort ShaderTools Sql StateMachine Svg TextToSpeech WebChannel WebEngineCore WebEngineQuick WebSockets Xml"; \
