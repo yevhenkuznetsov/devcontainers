@@ -35,6 +35,7 @@ RUN sudo apt-get update && \
     bison \
     pkg-config \
     libdrm-dev \
+    libva-dev \
     libxdamage-dev \
     libnss3-dev \
     libnss3 \
@@ -73,12 +74,16 @@ RUN ../qt6/configure -openssl -release -nomake examples -nomake tests \
     -webengine-webrtc \
     -submodules $QT_MODULES \
     -- \
-    -DFEATURE_qtwebengine_build=ON
+    -DFEATURE_qtwebengine_build=ON \
+    -DFEATURE_webengine_vaapi=ON
 COPY qt/build.sh /tmp/qt6-build
 RUN ./build.sh
 COPY qt/verify-webengine-codecs.sh /tmp/qt6-build
 RUN bash ./verify-webengine-codecs.sh
 RUN sudo cmake --install .
+RUN grep -Eq '^QT\.webenginecore_private\.enabled_features = .*\bwebengine-vaapi\b' \
+    "/usr/local/Qt-${QT_VERSION}/mkspecs/modules/qt_lib_webenginecore_private.pri" || \
+    { echo 'Installed Qt WebEngine is missing the webengine-vaapi feature.'; exit 1; }
 RUN bash -lc 'set -euo pipefail; \
 required_modules="Concurrent Core Graphs Gui HttpServer LinguistTools Location Multimedia Network OpenGL Positioning Qml QmlIntegration Quick Quick3D QuickControls2 QuickVectorImage QuickWidgets Sensors SerialPort ShaderTools Sql StateMachine Svg TextToSpeech WebChannel WebEngineCore WebEngineQuick WebSockets Xml"; \
 qt_cmake_root="/usr/local/Qt-${QT_VERSION}/lib/cmake"; \
